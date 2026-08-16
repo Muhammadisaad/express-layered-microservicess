@@ -42,8 +42,8 @@ userschema.pre('save', async function () {
   if (!this.isModified('password')) return ;
 
   try {
-    const salt = await bcrypt.genSalt(10); // ✅ Fix: bcrypt.genSalt
-    this.password = await bcrypt.hash(this.password, salt); // ✅ Fix: bcrypt.hash
+    const salt = await bcrypt.genSalt(10); //  Fix: bcrypt.genSalt
+    this.password = await bcrypt.hash(this.password, salt); //  Fix: bcrypt.hash
     // next();
   } catch (error) {
     // next(error);
