@@ -37,7 +37,37 @@ import User from "../models/register.model.js"
             });
         }
 
+        //check if user already exist
+        //  const existingUser = await User.findOne({email});
+        //  if(existingUser){
+        //     return res.status(400).json(
+        //         {
+        //             success:false,
+        //             message:"user aready exist"
+        //         }
+        //     )
+        //  }
+
+         //create user if not exists
+        //  const user = await User.create({
+        //     name,
+        //     email,
+        //     password,
+        //     role
+        //  })
+         //give response data
+         
+
+
+
+    // } catch (error) {
+    //     console.error("REGISTER CONTROLLER ERROR:", error);
+    //     res.status(500).json({
+    //         success:false,
+    //         message:"internal server error"
+    //     });
         
+    // };
 }
 export default registerUser;
 
