@@ -1,12 +1,7 @@
-// import { request } from "express";
-
 const asyncHandler = (requestHandler) => {
-    (req,res,next)=>{
-        Promise.resolve(requestHandler(req,res,next))
-        .catch(err => next(err))
-    }
+     return (req,res,next) => {
 
-
-
-}
-export  { asyncHandler };
+        Promise.resolve(requestHandler(req , res , next)).catch(next);
+    };
+};
+export default asyncHandler;

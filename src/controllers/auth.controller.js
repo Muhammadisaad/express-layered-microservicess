@@ -1,73 +1,50 @@
-import { response } from "express";
+
+console.log("loading registeruser");
 import User from "../models/register.model.js"
- const registerUser = async (req, res)=>{
-    try {
-        const {name , email ,password,role}= req.body;
-
-
-        const user = await User.create({
-            name,email,password,role:'user'
-        });
-        const userResponse ={
-            name:user.name,
-            email:user.email,
-            role:user.role,
-            createdat:user.createdAt
-         };
-        return res.status(201).json({
-            success:true,
-            message:"user registered successfully",
-             data:userResponse   
-            
-        });
-        
-
-    }catch(error)
+// import  asyncHandler  from "../utils/asyncHandler.old.js";
+import asyncHandler from "../utils/asyncHandler.js";
+import ApiError from "../utils/ApiError.js";
+import ApiResponse from "../utils/ApiResponse.js";
+ const registerUser =  asyncHandler(async (req, res)=>
     {
-            if(error.code=11000){
-                return res.status(409).json({
-                    success:false,
-                    message:"user already exist",
-                    error:error.message
-                });
-            }
-            return res.status(500).json({
-                success:false,
-                message:"internal server error"
+    
+        const {username,name , email ,password,role}= req.body;
+       
+        let user;
+
+        try
+        {
+             user = await User.create(
+            {
+               username, name,email,password,role:'user'
             });
+          
+         return res.status(201).json(
+              new ApiResponse(201,"user registered successfully",{
+                // username:user.username,
+                name:user.name,
+                email:user.email,
+                role:user.role,
+                createdAt:user.createdAt,
+                updatedAt:user.updatedAt
+
+            
+              })
+         );
+
+        }catch(error)
+        {   
+            if(error.code===11000){
+            throw new ApiError(409, "user already exist",error.message)
+
+            }
+            console.log("mongoose error",error);
+              throw new ApiError(500,"internal server error",error.message)
         }
-
-        //check if user already exist
-        //  const existingUser = await User.findOne({email});
-        //  if(existingUser){
-        //     return res.status(400).json(
-        //         {
-        //             success:false,
-        //             message:"user aready exist"
-        //         }
-        //     )
-        //  }
-
-         //create user if not exists
-        //  const user = await User.create({
-        //     name,
-        //     email,
-        //     password,
-        //     role
-        //  })
-         //give response data
-         
-
-
-
-    // } catch (error) {
-    //     console.error("REGISTER CONTROLLER ERROR:", error);
-    //     res.status(500).json({
-    //         success:false,
-    //         message:"internal server error"
-    //     });
-        
-    // };
-}
-export default registerUser;
+     
+    
+    }
+);
+export {  registerUser } ;
+// console.log("file exported ")
 

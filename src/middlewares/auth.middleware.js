@@ -1,4 +1,4 @@
- const validateUser = (req , res , next) =>{
+ export const validateUser = (req , res , next) =>{
     const { name, email , password } = req.body;
 
     if(!(name && email && password) ){
@@ -19,4 +19,4 @@
     }
     next();
 }
-export default validateUser;
+// export default validateUser;
