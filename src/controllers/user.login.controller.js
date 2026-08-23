@@ -20,12 +20,14 @@ const {username , email , password} = req.body;
           {  email:email
         }]
         
-    
-    });
+        });
     
     if (!user) {
         throw new ApiError(404,false ,"user not found")
     
+    }
+    if(!user.password){
+        throw new ApiError(401,'use gthub for signup')
     }
     const isPasswordCorrect = await user.matchpassword(password);
     if( !isPasswordCorrect){
@@ -53,9 +55,6 @@ const {username , email , password} = req.body;
             
               })
             )
-
-
-
 
 })
 export default loginUser;

@@ -32,7 +32,7 @@ const userschema = new Schema({
     },
     password:{
         type:String,
-        required:[true,"password is required"],
+        required:false,
         minimumlength:[8, "minimum length is 8 characters"],
         trim:true,
     },
@@ -41,6 +41,15 @@ const userschema = new Schema({
         required: [true, "role is required"],
         enum:['user',' service_provider'],
         default:'user',
+    },
+    githubid:{
+      type:String,
+      unique:true,
+      sparse:true
+    },
+    avatar:{
+
+      type:String
     },
     refreshtoken:{
       type:String,
@@ -53,6 +62,7 @@ const userschema = new Schema({
 // 1. Password Hashing Pre-Save Hook
 userschema.pre('save', async function () {
   // Pass control further if password is not modified
+  if(!this.password)return;
   if (!this.isModified('password')) return ;
 
   
@@ -66,6 +76,7 @@ userschema.pre('save', async function () {
 
 // 2. Password Comparison Method
 userschema.methods.matchpassword = async function (password) {
+  if(!this.password)return false;
   return await bcrypt.compare(password, this.password); 
 };
 userschema.methods.generateAccessToken=function(){
