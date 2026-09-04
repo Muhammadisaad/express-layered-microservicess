@@ -35,7 +35,7 @@ A production-ready Node.js backend boilerplate implementing **JWT authentication
 ## 📁 Project Structure
 
 
-
+```bash
 src/
 ├── config/
 │   ├── db.config.js          # MongoDB connection
@@ -57,7 +57,7 @@ src/
 └── index.js                  # Server entry point
 
 
-
+```
 ---
 
 ## 🚀 Getting Started
