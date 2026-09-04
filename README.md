@@ -34,7 +34,6 @@ A production-ready Node.js backend boilerplate implementing **JWT authentication
 
 ## 📁 Project Structure
 
-
 ```bash
 src/
 ├── config/
@@ -55,14 +54,14 @@ src/
 │   └── asyncHandler.js       # Async error catcher
 ├── app.js                    # Express app configuration
 └── index.js                  # Server entry point
-
-
 ```
+
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js (v16+)
 - MongoDB (local or Atlas)
 - GitHub OAuth App (for OAuth login)
@@ -70,142 +69,153 @@ src/
 ### Installation
 
 1. **Clone the repository**
-   bash
-   git clone https://github.com/Muhammadisaad/express-layered-microservicess.git
-   cd express-layered-microservicess
 
+```bash
+git clone https://github.com/Muhammadisaad/express-layered-microservicess.git
+cd express-layered-microservicess
+```
 
-2. Install dependencies
-   bash
-   npm install
-   
-3. Set up environment variables
-   bash
-   cp .env.example .env
-   
-   Fill in the required values (see Environment Variables).
-4. Start the development server
-   bash
-   npm run dev
-   
-   Server runs at http://localhost:8000 (or your configured port).
+2. **Install dependencies**
+
+```bash
+npm install
+```
+
+3. **Set up environment variables**
+
+```bash
+cp .env.example .env
+```
+
+Fill in the required values (see [Environment Variables](#-environment-variables)).
+
+4. **Start the development server**
+
+```bash
+npm run dev
+```
+
+Server runs at `http://localhost:8000` (or your configured port).
 
 ---
 
-🔐 API Endpoints
+## 🔐 API Endpoints
 
-Method Endpoint Description Auth Required
-POST /api/v1/auth/register Register a new user ❌
-POST /api/v1/auth/login Login with email + password ❌
-GET /api/v1/auth/github Initiate GitHub OAuth login ❌
-GET /api/v1/auth/github/callback GitHub OAuth callback (handles redirect) ❌
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `POST` | `/api/v1/auth/register` | Register a new user | ❌ |
+| `POST` | `/api/v1/auth/login` | Login with email + password | ❌ |
+| `GET` | `/api/v1/auth/github` | Initiate GitHub OAuth login | ❌ |
+| `GET` | `/api/v1/auth/github/callback` | GitHub OAuth callback (handles redirect) | ❌ |
 
-Authentication Flow
+---
 
-1. Email/Password Registration
+### Authentication Flow
 
-json
+#### 1. Email/Password Registration
+
+```json
 POST /api/v1/auth/register
 {
-  "username": "saad",
-  "name": "saad",
-  "email": "saaad@example.com",
+  "username": "john_doe",
+  "name": "John Doe",
+  "email": "john@example.com",
   "password": "securepassword123"
 }
+```
 
+#### 2. Email/Password Login
 
-2. Email/Password Login
-
-json
+```json
 POST /api/v1/auth/login
 {
-  "email": "saad@example.com",
+  "email": "john@example.com",
   "password": "securepassword123"
 }
+```
 
+**Response:**
 
-Response:
-
-json
+```json
 {
   "success": true,
   "message": "Login successful",
   "data": {
     "user": {
       "id": "...",
-      "username": "saady",
-      "name": "saad",
-      "email": "saad@example.com",
+      "username": "john_doe",
+      "name": "John Doe",
+      "email": "john@example.com",
       "role": "user"
     },
     "accessToken": "eyJhbGciOiJIUzI1NiIs...",
     "refreshToken": "eyJhbGciOiJIUzI1NiIs..."
   }
 }
+```
 
+#### 3. GitHub OAuth Login
 
-3. GitHub OAuth Login
-
-1. Navigate to /api/v1/auth/github in your browser.
+1. Navigate to `/api/v1/auth/github` in your browser.
 2. Authorize the application on GitHub.
 3. You'll be redirected back with JWT tokens in the response.
 
 ---
 
-🔧 Environment Variables
+## 🔧 Environment Variables
 
-Create a .env file in the root directory:
+Create a `.env` file in the root directory:
 
-env
+```env
 PORT=8000
 MONGODB_URI=mongodb://localhost:27017/your_database
 
-ACCESS_TOKEN_SECRET=your_access_token_secret
+ACCESS_TOKEN_SECRET=your_secret_key_here
 ACCESS_TOKEN_EXPIRY=1d
-REFRESH_TOKEN_SECRET=your_refresh_token_secret
+REFRESH_TOKEN_SECRET=your_secret_key_here
 REFRESH_TOKEN_EXPIRY=7d
 
 GITHUB_CLIENT_ID=your_github_client_id
 GITHUB_CLIENT_SECRET=your_github_client_secret
 SESSION_SECRET=your_session_secret
+```
 
+### GitHub OAuth Setup
 
-GitHub OAuth Setup
-
-1. Go to GitHub Developer Settings → OAuth Apps → New OAuth App.
-2. Set Homepage URL to http://localhost:8000.
-3. Set Authorization callback URL to http://localhost:8000/api/v1/auth/github/callback.
-4. Copy the Client ID and Client Secret into your .env.
-
----
-
-🛡️ Security Features
-
-· Password Hashing: Bcrypt with salt rounds (6)
-· JWT Tokens: Short-lived access tokens + long-lived refresh tokens
-· OAuth Account Linking: Users can link GitHub to existing email/password accounts
-· Sparse Indexing: githubId field is sparse: true to allow multiple users without GitHub IDs
-· Password Flexibility: OAuth users have password: null and are blocked from password-based login
+1. Go to [GitHub Developer Settings](https://github.com/settings/developers) → OAuth Apps → New OAuth App.
+2. Set **Homepage URL** to `http://localhost:8000`.
+3. Set **Authorization callback URL** to `http://localhost:8000/api/v1/auth/github/callback`.
+4. Copy the `Client ID` and `Client Secret` into your `.env`.
 
 ---
 
-📚 Learning Resources
+## 🛡️ Security Features
 
-This project was built as part of a backend engineering learning journey. Key concepts applied:
+- **Password Hashing:** Bcrypt with salt rounds (6)
+- **JWT Tokens:** Short-lived access tokens + long-lived refresh tokens
+- **OAuth Account Linking:** Users can link GitHub to existing email/password accounts
+- **Sparse Indexing:** `githubId` field is `sparse: true` to allow multiple users without GitHub IDs
+- **Password Flexibility:** OAuth users have `password: null` and are blocked from password-based login
 
-· Layered Architecture Pattern
-· JWT Authentication
-· Passport.js OAuth Strategies
-· Mongoose Middleware (Pre-save Hooks)
+---
 
 ---
 
+## 📝 License
 
-👤 Author
-
-Muhammad Saad Nadeem
-
-· GitHub: @Muhammadisaad
-· LinkedIn: Muhammad Saad Naseem
+This project is [ISC](https://choosealicense.com/licenses/isc/)-licensed.
 
 ---
+
+## 👤 Author
+
+**Muhammad Saad Nadeem**
+
+- GitHub: [@Muhammadisaad](https://github.com/Muhammadisaad)
+- LinkedIn: [Muhammad Saad Naseem](https://www.linkedin.com/in/muhammad-saad-naseem-663364357/)
+
+---
+
+## ⭐ Show Your Support
+
+If you found this project helpful, please give it a ⭐ on GitHub!
