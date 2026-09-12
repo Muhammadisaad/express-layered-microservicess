@@ -12,9 +12,11 @@ app.use(cors({
     origin:process.env.CORS_ORIGIN
     ,credentials:true
 }));
+//to handle data rom json
 app.use(express.json({
     limit:"16kb"
 }))
+//to handle data from html form
 app.use(express.urlencoded({
     extended:true,
     limit:"16kb"
